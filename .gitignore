@@ -1,0 +1,10 @@
+.DS_Store
+.rvmrc
+.irbrc
+.bundle
+log
+.env
+*.swp
+Gemfile.lock
+.ruby-version
+pkg

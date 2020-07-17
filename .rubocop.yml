@@ -1,0 +1,15 @@
+Metrics:
+  Enabled: false
+
+Layout/LineLength:
+  Max: 500
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+Style/ModuleFunction:
+  EnforcedStyle: extend_self
+
+inherit_from: .rubocop_todo.yml
+

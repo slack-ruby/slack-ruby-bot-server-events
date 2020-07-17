@@ -1,0 +1,19 @@
+development:
+  clients:
+    default:
+      database: slack-ruby-bot-server-slack_development
+      hosts:
+        - 127.0.0.1:27017
+  options:
+    raise_not_found_error: false
+    use_utc: true
+
+test:
+  clients:
+    default:
+      database: slack-ruby-bot-server-slack_test
+      hosts:
+        - 127.0.0.1:27017
+  options:
+    raise_not_found_error: false
+    use_utc: true
