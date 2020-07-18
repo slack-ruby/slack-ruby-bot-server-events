@@ -39,7 +39,8 @@ module SlackRubyBotServer
             end
             post '/action' do
               action = SlackRubyBotServer::Slack::Requests::Action.new(params, request)
-              SlackRubyBotServer::Slack.config.run_callbacks(:action, action) || body(false)
+              callback_id = params[:payload][:callback_id]
+              SlackRubyBotServer::Slack.config.run_callbacks(:action, callback_id, action) || body(false)
             end
           end
         end

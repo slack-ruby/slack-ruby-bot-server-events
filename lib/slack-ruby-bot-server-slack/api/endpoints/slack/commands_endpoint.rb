@@ -18,7 +18,8 @@ module SlackRubyBotServer
             end
             post '/command' do
               command = SlackRubyBotServer::Slack::Requests::Command.new(params, request)
-              SlackRubyBotServer::Slack.config.run_callbacks(:command, command) || body(false)
+              command_name = command[:command]
+              SlackRubyBotServer::Slack.config.run_callbacks(:command, command_name, command) || body(false)
             end
           end
         end

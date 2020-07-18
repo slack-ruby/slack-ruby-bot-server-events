@@ -17,6 +17,17 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
       allow_any_instance_of(Slack::Events::Request).to receive(:verify!)
     end
 
+    let(:payload) do
+      {
+        actions: [{ name: 'id', value: '43749' }],
+        channel: { id: 'C12345', name: 'channel' },
+        user: { id: 'user_id' },
+        team: { id: 'team_id' },
+        token: 'deprecated',
+        callback_id: 'action_id'
+      }
+    end
+
     context 'with an action handler' do
       before do
         SlackRubyBotServer::Slack.configure do |config|
@@ -28,17 +39,6 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
             end
           end
         end
-      end
-
-      let(:payload) do
-        {
-          actions: [{ name: 'id', value: '43749' }],
-          channel: { id: 'C12345', name: 'channel' },
-          user: { id: 'user_id' },
-          team: { id: 'team_id' },
-          token: 'deprecated',
-          callback_id: 'action_id'
-        }
       end
 
       it 'performs action' do
@@ -53,6 +53,56 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
         expect(last_response.status).to eq 400
         response = JSON.parse(last_response.body)
         expect(response['message']).to eq('Action invalid is not supported.')
+      end
+    end
+
+    context 'with a specific action handler' do
+      before do
+        SlackRubyBotServer::Slack.configure do |config|
+          config.on :action, 'action_id' do |_action|
+            { text: 'Success!' }
+          end
+        end
+      end
+
+      it 'performs action' do
+        post '/api/slack/action', payload: payload.merge(callback_id: 'action_id').to_json
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Success!')
+      end
+
+      it 'ignores an unhandled action' do
+        post '/api/slack/action', payload: payload.merge(callback_id: 'invalid').to_json
+        expect(last_response.status).to eq 204
+      end
+    end
+
+    context 'with both handlers' do
+      before do
+        SlackRubyBotServer::Slack.configure do |config|
+          config.on :action, 'action_id' do |_action|
+            { text: 'Success!' }
+          end
+
+          config.on :action do |action|
+            { text: "Invoked action #{action[:payload][:callback_id]}." }
+          end
+        end
+      end
+
+      it 'performs action' do
+        post '/api/slack/action', payload: payload.merge(callback_id: 'action_id').to_json
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Success!')
+      end
+
+      it 'ignores an unhandled action' do
+        post '/api/slack/action', payload: payload.merge(callback_id: 'invalid').to_json
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Invoked action invalid.')
       end
     end
   end

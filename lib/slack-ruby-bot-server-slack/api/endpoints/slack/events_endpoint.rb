@@ -14,7 +14,10 @@ module SlackRubyBotServer
             end
             post '/event' do
               event = SlackRubyBotServer::Slack::Requests::Event.new(params, request)
-              SlackRubyBotServer::Slack.config.run_callbacks(:event, event) || body(false)
+              type = event[:type]
+              event_type = event[:event][:type] if event.key?(:event)
+              key = [type, event_type].compact
+              SlackRubyBotServer::Slack.config.run_callbacks(:event, key, event) || body(false)
             end
           end
         end

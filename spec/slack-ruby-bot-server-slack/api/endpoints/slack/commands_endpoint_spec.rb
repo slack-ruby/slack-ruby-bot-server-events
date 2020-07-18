@@ -62,5 +62,44 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::CommandsEndpoint do
         expect(response).to eq('text' => 'Unknown command: /invalid')
       end
     end
+
+    context 'with a named command' do
+      before do
+        SlackRubyBotServer::Slack.configure do |config|
+          config.on :command, '/foo' do |_command|
+            { text: 'Foo!' }
+          end
+
+          config.on :command, '/test' do |_command|
+            { text: 'Test!' }
+          end
+
+          config.on :command do |command|
+            { text: "Invoked command #{command[:command]}." }
+          end
+        end
+      end
+
+      it 'invokes command' do
+        post '/api/slack/command', command.merge(command: '/test')
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Test!')
+      end
+
+      it 'invokes another command' do
+        post '/api/slack/command', command.merge(command: '/foo')
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Foo!')
+      end
+
+      it 'handles unknown command' do
+        post '/api/slack/command', command.merge(command: '/invalid')
+        expect(last_response.status).to eq 201
+        response = JSON.parse(last_response.body)
+        expect(response).to eq('text' => 'Invoked command /invalid.')
+      end
+    end
   end
 end

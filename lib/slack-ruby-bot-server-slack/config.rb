@@ -18,26 +18,34 @@ module SlackRubyBotServer
         self.signing_secret = ENV['SLACK_SIGNING_SECRET']
         self.signature_expires_in = 5 * 60
 
-        on :event do |event|
-          case event[:type]
-          when 'url_verification'
-            { challenge: event[:challenge] }
-          end
+        on :event, 'url_verification' do |event|
+          { challenge: event[:challenge] }
         end
       end
 
-      def on(*types, &block)
+      def on(types, value = nil, &block)
         Array(types).each do |type|
-          callbacks[type.to_s] << block
+          value_key = Array(value).compact.join('/') if value
+          key = [type.to_s, value_key].compact.join('/')
+          callbacks[key] << block
         end
       end
 
-      def run_callbacks(type, args)
-        callbacks = self.callbacks[type.to_s]
+      def run_callbacks(type, value, args)
+        callbacks = []
+
+        keys = ([type.to_s] + Array(value)).compact
+
+        # more specific callbacks first
+        while keys.any?
+          callbacks += self.callbacks[keys.join('/')]
+          keys.pop
+        end
+
         return nil unless callbacks&.any?
 
         callbacks.each do |c|
-          rc = c.call(args)
+          rc = c.call(args || value)
           return rc if rc
         end
 

@@ -41,16 +41,11 @@ This library supports events, actions and commands. When implementing multiple c
 
 #### Events
 
-Handle the [Slack Events API](https://api.slack.com/events-api) by implementing `SlackRubyBotServer::Slack::Config#on :event`.
-
-The following example unfurls URLs.
+Respond to [Slack Events](https://api.slack.com/events-api) by implementing `SlackRubyBotServer::Slack::Config#on :event`. The following example unfurls URLs and fails any other event type.
 
 ```ruby
 SlackRubyBotServer::Slack.configure do |config|
-  config.on :event do |event|
-    next unless event[:type] == 'event_callback'
-    next unless event[:event][:type] == 'link_shared'
-
+  config.on :event, 'event_callback', 'link_shared' do |event|
     event[:event][:links].each do |link|
       Slack::Web::Client.new(token: '...').chat_unfurl(
         channel: event[:event][:channel],
@@ -61,7 +56,15 @@ SlackRubyBotServer::Slack.configure do |config|
       )
     end
 
-    true
+    true # return true to avoid invoking further callbacks
+  end
+
+  config.on :event, 'event_callback' do |event|
+    raise "I don't know how to handle #{event[:event][:type]}."
+  end
+
+  config.on :event do |event|
+    raise "I don't know how to handle #{event[:type]}."
   end
 end
 ```
@@ -73,10 +76,13 @@ Respond to [Interactive Message Buttons](https://api.slack.com/legacy/message-bu
 
 ```ruby
 SlackRubyBotServer::Slack.configure do |config|
-  config.on :action do |action|
-    return unless action[:payload][:callback_id] == 'action_id'
-
+  config.on :action, 'action_id' do |action|
+    # action[:payload][:callback_id] is 'action_id'
     { text: 'Success!' }
+  end
+
+  config.on :action do |action|
+    { text: "I don't know how to handle #{action[:payload][:callback_id]}." }
   end
 end
 ```
@@ -87,10 +93,12 @@ Respond to [Slash Commands](https://api.slack.com/interactivity/slash-commands) 
 
 ```ruby
 SlackRubyBotServer::Slack.configure do |config|
-  config.on :command do |command|
-    next unless command[:command] == '/test'
-
+  config.on :command, '/test' do
     { text: 'Success!' }
+  end
+
+  config.on :command do |command|
+    { text: "I don't know how to handle #{command[:command]}." }
   end
 end
 ```
