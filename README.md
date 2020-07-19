@@ -1,10 +1,10 @@
-Slack Ruby Bot Server Slack Extensions
+Slack Ruby Bot Server Events Extension
 ======================================
 
 [![Gem Version](https://badge.fury.io/rb/slack-ruby-bot-server-events.svg)](https://badge.fury.io/rb/slack-ruby-bot-server-events)
 [![Build Status](https://travis-ci.org/slack-ruby/slack-ruby-bot-server-events.svg?branch=master)](https://travis-ci.org/slack-ruby/slack-ruby-bot-server-events)
 
-An extension to [slack-ruby-bot-server](https://github.com/slack-ruby/slack-ruby-bot-server) that enables handling of Slack slash commands, interactive buttons and events.
+An extension to [slack-ruby-bot-server](https://github.com/slack-ruby/slack-ruby-bot-server) that makes it easy to handle Slack slash commands, interactive buttons and events.
 
 ### Sample
 
