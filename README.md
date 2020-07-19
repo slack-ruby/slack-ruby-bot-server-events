@@ -35,6 +35,8 @@ setting               | description
 signing_secret        | Slack signing secret, defaults is `ENV['SLACK_SIGNING_SECRET']`.
 signature_expires_in  | Signature expiration window in seconds, default is `300`.
 
+Get the signing secret from [your app's](https://api.slack.com/apps) _Basic Information_ settings.
+
 #### Implement Callbacks
 
 This library supports events, actions and commands. When implementing multiple callbacks for each type, the response from the first callback to return a non `nil` value will be used and no further callbacks will be invoked. Callbacks receive subclasses of [SlackRubyBotServer::Events::Requests::Request](lib/slack-ruby-bot-server-events/requests/request.rb).
@@ -45,7 +47,7 @@ Respond to [Slack Events](https://api.slack.com/events-api) by implementing `Sla
 
 ```ruby
 SlackRubyBotServer::Events.configure do |config|
-  config.on :event, 'event_callback', 'link_shared' do |event|
+  config.on :event, ['event_callback', 'link_shared'] do |event|
     event[:event][:links].each do |link|
       Slack::Web::Client.new(token: '...').chat_unfurl(
         channel: event[:event][:channel],
