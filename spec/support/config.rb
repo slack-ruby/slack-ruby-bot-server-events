@@ -2,6 +2,6 @@
 
 RSpec.configure do |config|
   config.before do
-    SlackRubyBotServer::Slack::Config.reset!
+    SlackRubyBotServer::Events::Config.reset!
   end
 end

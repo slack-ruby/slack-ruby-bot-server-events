@@ -3,7 +3,7 @@
 require 'hyperclient'
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Api
       module Test
         module EndpointTest

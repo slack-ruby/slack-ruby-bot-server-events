@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::CommandsEndpoint do
-  include SlackRubyBotServer::Slack::Api::Test::EndpointTest
+describe SlackRubyBotServer::Events::Api::Endpoints::Slack::CommandsEndpoint do
+  include SlackRubyBotServer::Events::Api::Test::EndpointTest
 
   it 'checks signature' do
     post '/api/slack/command'
@@ -36,7 +36,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::CommandsEndpoint do
 
     context 'with a command' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :command do |command|
             case command[:command]
             when '/test'
@@ -65,7 +65,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::CommandsEndpoint do
 
     context 'with a named command' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :command, '/foo' do |_command|
             { text: 'Foo!' }
           end

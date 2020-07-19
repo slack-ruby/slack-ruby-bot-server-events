@@ -1,9 +1,9 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Requests
-      class Action < Request
+      class Event < Request
       end
     end
   end

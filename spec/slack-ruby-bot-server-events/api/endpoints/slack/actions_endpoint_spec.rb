@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
-  include SlackRubyBotServer::Slack::Api::Test::EndpointTest
+describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
+  include SlackRubyBotServer::Events::Api::Test::EndpointTest
 
   it 'checks signature' do
     post '/api/slack/action'
@@ -30,7 +30,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
 
     context 'with an action handler' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :action do |action|
             if action[:payload][:callback_id] == 'action_id'
               { text: 'Success!' }
@@ -58,7 +58,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
 
     context 'with a specific action handler' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :action, 'action_id' do |_action|
             { text: 'Success!' }
           end
@@ -80,7 +80,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint do
 
     context 'with both handlers' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :action, 'action_id' do |_action|
             { text: 'Success!' }
           end

@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Api
       module Endpoints
         module Slack
@@ -17,9 +17,9 @@ module SlackRubyBotServer
               requires :team_id, type: String
             end
             post '/command' do
-              command = SlackRubyBotServer::Slack::Requests::Command.new(params, request)
+              command = SlackRubyBotServer::Events::Requests::Command.new(params, request)
               command_name = command[:command]
-              SlackRubyBotServer::Slack.config.run_callbacks(:command, command_name, command) || body(false)
+              SlackRubyBotServer::Events.config.run_callbacks(:command, command_name, command) || body(false)
             end
           end
         end

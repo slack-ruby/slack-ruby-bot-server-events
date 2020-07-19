@@ -11,17 +11,17 @@ module SlackRubyBotServer
             begin
               ::Slack::Events::Request.new(
                 request,
-                signing_secret: SlackRubyBotServer::Slack.config.signing_secret,
-                signature_expires_in: SlackRubyBotServer::Slack.config.signature_expires_in
+                signing_secret: SlackRubyBotServer::Events.config.signing_secret,
+                signature_expires_in: SlackRubyBotServer::Events.config.signature_expires_in
               ).verify!
             rescue ::Slack::Events::Request::TimestampExpired
               error!('Invalid Signature', 403)
             end
           end
 
-          mount SlackRubyBotServer::Slack::Api::Endpoints::Slack::CommandsEndpoint
-          mount SlackRubyBotServer::Slack::Api::Endpoints::Slack::ActionsEndpoint
-          mount SlackRubyBotServer::Slack::Api::Endpoints::Slack::EventsEndpoint
+          mount SlackRubyBotServer::Events::Api::Endpoints::Slack::CommandsEndpoint
+          mount SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint
+          mount SlackRubyBotServer::Events::Api::Endpoints::Slack::EventsEndpoint
         end
       end
     end

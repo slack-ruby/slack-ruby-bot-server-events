@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Api
       module Endpoints
         module Slack
@@ -13,11 +13,11 @@ module SlackRubyBotServer
               optional :challenge, type: String
             end
             post '/event' do
-              event = SlackRubyBotServer::Slack::Requests::Event.new(params, request)
+              event = SlackRubyBotServer::Events::Requests::Event.new(params, request)
               type = event[:type]
               event_type = event[:event][:type] if event.key?(:event)
               key = [type, event_type].compact
-              SlackRubyBotServer::Slack.config.run_callbacks(:event, key, event) || body(false)
+              SlackRubyBotServer::Events.config.run_callbacks(:event, key, event) || body(false)
             end
           end
         end

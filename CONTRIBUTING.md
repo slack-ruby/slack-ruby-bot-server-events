@@ -1,19 +1,19 @@
-# Contributing to SlackRubyBotServer::Slack
+# Contributing to SlackRubyBotServer::Events
 
-This project is work of [many contributors](https://github.com/slack-ruby/slack-ruby-bot-server-slack/graphs/contributors).
+This project is work of [many contributors](https://github.com/slack-ruby/slack-ruby-bot-server-events/graphs/contributors).
 
-You're encouraged to submit [pull requests](https://github.com/slack-ruby/slack-ruby-bot-server-slack/pulls), [propose features and discuss issues](https://github.com/slack-ruby/slack-ruby-bot-server-slack/issues).
+You're encouraged to submit [pull requests](https://github.com/slack-ruby/slack-ruby-bot-server-events/pulls), [propose features and discuss issues](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues).
 
 In the examples below, substitute your Github username for `contributor` in URLs.
 
 ## Fork the Project
 
-Fork the [project on Github](https://github.com/slack-ruby/slack-ruby-bot-server-slack) and check out your copy.
+Fork the [project on Github](https://github.com/slack-ruby/slack-ruby-bot-server-events) and check out your copy.
 
 ```
-git clone https://github.com/contributor/slack-ruby-bot-server-slack.git
-cd slack-ruby-bot-server-slack
-git remote add upstream https://github.com/slack-ruby/slack-ruby-bot-server-slack.git
+git clone https://github.com/contributor/slack-ruby-bot-server-events.git
+cd slack-ruby-bot-server-events
+git remote add upstream https://github.com/slack-ruby/slack-ruby-bot-server-events.git
 ```
 
 ## Create a Topic Branch
@@ -84,7 +84,7 @@ git push origin my-feature-branch
 
 ## Make a Pull Request
 
-Go to https://github.com/contributor/slack-ruby-bot-server-slack and select your feature branch.
+Go to https://github.com/contributor/slack-ruby-bot-server-events and select your feature branch.
 Click the 'Pull Request' button and fill out the form. Pull requests are usually reviewed within a few days.
 
 ## Rebase
@@ -102,7 +102,7 @@ git push origin my-feature-branch -f
 Update the [CHANGELOG](CHANGELOG.md) with the pull request number. A typical entry looks as follows.
 
 ```
-* [#123](https://github.com/slack-ruby/slack-ruby-bot-server-slack/pull/123): Reticulated splines - [@contributor](https://github.com/contributor).
+* [#123](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/123): Reticulated splines - [@contributor](https://github.com/contributor).
 ```
 
 Amend your previous commit and force push the changes.

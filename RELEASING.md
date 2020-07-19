@@ -1,6 +1,6 @@
-# Releasing Slack-Ruby-Bot-Server-Slack
+# Releasing Slack-Ruby-Bot-Server-Events
 
-There're no hard rules about when to release slack-ruby-bot-server-slack. Release bug fixes frequently, features not so frequently and breaking API changes rarely.
+There're no hard rules about when to release slack-ruby-bot-server-events. Release bug fixes frequently, features not so frequently and breaking API changes rarely.
 
 ### Release
 
@@ -11,7 +11,7 @@ bundle install
 rake
 ```
 
-Check that the last build succeeded in [Travis CI](https://travis-ci.org/slack-ruby/slack-ruby-bot-server-slack) for all supported platforms.
+Check that the last build succeeded in [Travis CI](https://travis-ci.org/slack-ruby/slack-ruby-bot-server-events) for all supported platforms.
 
 Change "Next" in [CHANGELOG.md](CHANGELOG.md) to the current date.
 
@@ -34,10 +34,10 @@ Release.
 ```
 $ rake release
 
-slack-ruby-bot-server-slack 0.2.2 built to pkg/slack-ruby-bot-server-slack-0.2.2.gem.
+slack-ruby-bot-server-events 0.2.2 built to pkg/slack-ruby-bot-server-events-0.2.2.gem.
 Tagged v0.2.2.
 Pushed git commits and tags.
-Pushed slack-ruby-bot-server-slack 0.2.2 to rubygems.org.
+Pushed slack-ruby-bot-server-events 0.2.2 to rubygems.org.
 ```
 
 ### Prepare for the Next Version
@@ -50,12 +50,12 @@ Add the next release to [CHANGELOG.md](CHANGELOG.md).
 * Your contribution here.
 ```
 
-Increment the third version number in [lib/slack-ruby-bot-server-slack/version.rb](lib/slack-ruby-bot-server-slack/version.rb).
+Increment the third version number in [lib/slack-ruby-bot-server-events/version.rb](lib/slack-ruby-bot-server-events/version.rb).
 
 Commit your changes.
 
 ```
-git add CHANGELOG.md lib/slack-ruby-bot-server-slack/version.rb
+git add CHANGELOG.md lib/slack-ruby-bot-server-events/version.rb
 git commit -m "Preparing for next development iteration, 0.2.3."
 git push origin master
 ```

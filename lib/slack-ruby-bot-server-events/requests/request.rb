@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Requests
       class Request < ActiveSupport::HashWithIndifferentAccess
         attr_reader :request

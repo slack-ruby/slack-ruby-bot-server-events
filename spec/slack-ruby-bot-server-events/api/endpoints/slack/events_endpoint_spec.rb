@@ -2,8 +2,8 @@
 
 require 'spec_helper'
 
-describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::EventsEndpoint do
-  include SlackRubyBotServer::Slack::Api::Test::EndpointTest
+describe SlackRubyBotServer::Events::Api::Endpoints::Slack::EventsEndpoint do
+  include SlackRubyBotServer::Events::Api::Test::EndpointTest
 
   it 'checks signature' do
     post '/api/slack/event'
@@ -41,7 +41,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::EventsEndpoint do
 
     context 'with an unfurl event' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :event do |event|
             if event[:type] == 'event_callback' && event[:event][:type] == 'link_shared'
               event[:event][:links].each do |link|
@@ -90,7 +90,7 @@ describe SlackRubyBotServer::Slack::Api::Endpoints::Slack::EventsEndpoint do
 
     context 'with a named event handler' do
       before do
-        SlackRubyBotServer::Slack.configure do |config|
+        SlackRubyBotServer::Events.configure do |config|
           config.on :event, 'event_callback/link_shared' do |event|
             event.logger.info 'Link shared event called.'
             true

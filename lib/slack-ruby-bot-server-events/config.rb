@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Config
       extend self
 
@@ -65,4 +65,4 @@ module SlackRubyBotServer
   end
 end
 
-SlackRubyBotServer::Slack::Config.reset!
+SlackRubyBotServer::Events::Config.reset!

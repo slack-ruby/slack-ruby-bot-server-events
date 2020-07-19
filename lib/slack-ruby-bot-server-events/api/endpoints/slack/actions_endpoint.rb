@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module SlackRubyBotServer
-  module Slack
+  module Events
     module Api
       module Endpoints
         module Slack
@@ -38,9 +38,9 @@ module SlackRubyBotServer
               end
             end
             post '/action' do
-              action = SlackRubyBotServer::Slack::Requests::Action.new(params, request)
+              action = SlackRubyBotServer::Events::Requests::Action.new(params, request)
               callback_id = params[:payload][:callback_id]
-              SlackRubyBotServer::Slack.config.run_callbacks(:action, callback_id, action) || body(false)
+              SlackRubyBotServer::Events.config.run_callbacks(:action, callback_id, action) || body(false)
             end
           end
         end
