@@ -23,12 +23,10 @@ module SlackRubyBotServer
         end
       end
 
-      def on(types, value = nil, &block)
-        Array(types).each do |type|
-          value_key = Array(value).compact.join('/') if value
-          key = [type.to_s, value_key].compact.join('/')
-          callbacks[key] << block
-        end
+      def on(type, *values, &block)
+        value_key = values.compact.join('/') if values.any?
+        key = [type.to_s, value_key].compact.join('/')
+        callbacks[key] << block
       end
 
       def run_callbacks(type, value, args)

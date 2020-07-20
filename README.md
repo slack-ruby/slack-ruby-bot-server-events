@@ -43,13 +43,15 @@ This library supports events, actions and commands. When implementing multiple c
 
 #### Events
 
-Respond to [Slack Events](https://api.slack.com/events-api) by implementing `SlackRubyBotServer::Events::Config#on :event`. The following example unfurls URLs and fails any other event type.
+Respond to [Slack Events](https://api.slack.com/events-api) by implementing `SlackRubyBotServer::Events::Config#on :event`.
+
+The following example unfurls URLs.
 
 ```ruby
 SlackRubyBotServer::Events.configure do |config|
-  config.on :event, ['event_callback', 'link_shared'] do |event|
+  config.on :event, 'event_callback', 'link_shared' do |event|
     event[:event][:links].each do |link|
-      Slack::Web::Client.new(token: '...').chat_unfurl(
+      Slack::Web::Client.new(token: ...).chat_unfurl(
         channel: event[:event][:channel],
         ts: event[:event][:message_ts],
         unfurls: {
@@ -62,11 +64,13 @@ SlackRubyBotServer::Events.configure do |config|
   end
 
   config.on :event, 'event_callback' do |event|
-    raise "I don't know how to handle #{event[:event][:type]}."
+    # handle any event callback
+    false
   end
 
   config.on :event do |event|
-    raise "I don't know how to handle #{event[:type]}."
+    # handle any event[:event][:type]
+    false
   end
 end
 ```
@@ -74,17 +78,27 @@ end
 
 #### Actions
 
-Respond to [Interactive Message Buttons](https://api.slack.com/legacy/message-buttons) by implementing `SlackRubyBotServer::Events::Config#on :action`.
+Respond to [Shortcuts](https://api.slack.com/interactivity/shortcuts) and [Interactive Message Buttons](https://api.slack.com/legacy/message-buttons) by implementing `SlackRubyBotServer::Events::Config#on :action`.
+
+The following example posts an ephemeral message that counts the letters in a message shortcut.
 
 ```ruby
 SlackRubyBotServer::Events.configure do |config|
-  config.on :action, 'action_id' do |action|
-    # action[:payload][:callback_id] is 'action_id'
-    { text: 'Success!' }
+  config.on :action, 'interactive_message', 'action_id' do |action|
+    payload = action[:payload]
+    message = payload[:message]
+
+    Faraday.post(payload[:response_url], {
+      text: "The text \"#{message[:text]}\" has #{message[:text].size} letter(s).",
+      response_type: 'ephemeral'
+    }.to_json, 'Content-Type' => 'application/json')
+
+    true
   end
 
   config.on :action do |action|
-    { text: "I don't know how to handle #{action[:payload][:callback_id]}." }
+    # handle any other action
+    false
   end
 end
 ```
@@ -93,14 +107,17 @@ end
 
 Respond to [Slash Commands](https://api.slack.com/interactivity/slash-commands) by implementing `SlackRubyBotServer::Events::Config#on :command`.
 
+The following example responds to `/ping` with `pong`.
+
 ```ruby
 SlackRubyBotServer::Events.configure do |config|
-  config.on :command, '/test' do
-    { text: 'Success!' }
+  config.on :command, '/ping' do
+    { text: 'pong' }
   end
 
   config.on :command do |command|
-    { text: "I don't know how to handle #{command[:command]}." }
+    # handle any other command
+    false
   end
 end
 ```
