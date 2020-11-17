@@ -22,6 +22,21 @@ gem 'slack-ruby-bot-server-events'
 
 #### Configure
 
+##### OAuth
+
+Configure your app's [OAuth version](https://api.slack.com/authentication/oauth-v2) and [scopes](https://api.slack.com/legacy/oauth-scopes) as needed by your application.
+
+```ruby
+SlackRubyBotServer.configure do |config|
+  config.oauth_version = :v2
+  config.oauth_scope = ['users:read', 'channels:read', 'groups:read', 'chat:write', 'commands', 'incoming-webhook']
+end
+```
+
+##### Events
+
+Configure events-specific settings.
+
 ```ruby
 SlackRubyBotServer::Events.configure do |config|
   config.signing_secret = 'secret'
@@ -93,7 +108,7 @@ SlackRubyBotServer::Events.configure do |config|
       response_type: 'ephemeral'
     }.to_json, 'Content-Type' => 'application/json')
 
-    true
+    { ok: true }
   end
 
   config.on :action do |action|
