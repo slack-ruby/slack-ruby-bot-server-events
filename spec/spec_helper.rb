@@ -5,6 +5,7 @@ ENV['DATABASE_ADAPTER'] ||= 'mongoid'
 
 Bundler.require
 
+require 'rack/test'
 require 'slack-ruby-bot-server/rspec'
 
 Dir[File.join(__dir__, 'support', '**/*.rb')].sort.each do |file|
