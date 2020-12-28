@@ -74,7 +74,6 @@ module SlackRubyBotServer
               payload_type = params[:payload][:type]
               callback_id = params[:payload][:callback_id]
               action_ids = params[:payload][:actions]&.map { |entity| entity[:action_id] }
-              p params
               SlackRubyBotServer::Events.config.run_callbacks(
                 :action,
                 ([payload_type, callback_id] + action_ids).compact,
