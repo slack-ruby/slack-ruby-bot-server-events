@@ -2,6 +2,7 @@
 
 #### 0.2.1 (Next)
 
+* Add support for `block_actions` interaction type - [CrazyOptimist](https://github.com/CrazyOptimist).
 * Your contribution here.
 
 #### 0.2.0 (07/19/2020)
