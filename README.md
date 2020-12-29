@@ -93,7 +93,7 @@ end
 
 #### Actions
 
-Respond to [Shortcuts](https://api.slack.com/interactivity/shortcuts) and [Interactive Message Buttons](https://api.slack.com/legacy/message-buttons) by implementing `SlackRubyBotServer::Events::Config#on :action`.
+Respond to [Shortcuts](https://api.slack.com/interactivity/shortcuts) and [Interactive Messages](https://api.slack.com/messaging/interactivity) as well as [Attached Interactive Message Buttons(Outmoded)](https://api.slack.com/legacy/message-buttons) by implementing `SlackRubyBotServer::Events::Config#on :action`.
 
 The following example posts an ephemeral message that counts the letters in a message shortcut.
 
@@ -114,6 +114,24 @@ SlackRubyBotServer::Events.configure do |config|
   config.on :action do |action|
     # handle any other action
     false
+  end
+end
+```
+
+The following example responds to an interactive message.  
+You can compose rich message layouts using [Block Kit Builder](https://app.slack.com/block-kit-builder).
+
+```ruby
+SlackRubyBotServer::Events.configure do |config|
+  config.on :action, 'block_actions', 'your_action_id' do |action|
+    payload = action[:payload]
+
+    Faraday.post(payload[:response_url], {
+      text: "The action \"your_action_id\" has been invoked.",
+      response_type: 'ephemeral'
+    }.to_json, 'Content-Type' => 'application/json')
+
+    { ok: true }
   end
 end
 ```
