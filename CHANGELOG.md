@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 0.3.1 (Next)
+
+* Your contribution here.
+
 #### 0.3.0 (12/30/2020)
 
 * [#6](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/6): Add support for block_actions interaction type - [@CrazyOptimist](https://github.com/CrazyOptimist).
