@@ -22,13 +22,21 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
       let(:payload) do
         {
           type: 'message_action',
-          actions: [{ name: 'id', value: '43749' }],
           channel: { id: 'C12345', name: 'channel' },
           user: { id: 'user_id' },
           team: { id: 'team_id' },
           token: 'deprecated',
           callback_id: 'action_id'
         }
+      end
+
+      shared_examples 'message_actions handler' do
+        it 'performs action' do
+          post '/api/slack/action', payload: payload.to_json
+          expect(last_response.status).to eq 201
+          response = JSON.parse(last_response.body)
+          expect(response).to eq('text' => 'message_action/action_id')
+        end
       end
 
       context 'with an action handler' do
@@ -40,11 +48,14 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
           end
         end
 
-        it 'performs action' do
-          post '/api/slack/action', payload: payload.to_json
-          expect(last_response.status).to eq 201
-          response = JSON.parse(last_response.body)
-          expect(response).to eq('text' => 'message_action/action_id')
+        it_behaves_like 'message_actions handler'
+
+        context 'with actions in the payload' do
+          before do
+            payload.merge!(actions: [{ name: 'id', value: '43749' }])
+          end
+
+          it_behaves_like 'message_actions handler'
         end
       end
 
