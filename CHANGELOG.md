@@ -1,9 +1,8 @@
 ### Changelog
 
-#### 0.3.1 (Next)
+#### 0.3.1 (2/4/2021)
 
 * [#9](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/9): Provide default value when actions are missing in payload - [@nijave](https://github.com/nijave).
-* Your contribution here.
 
 #### 0.3.0 (12/30/2020)
 
