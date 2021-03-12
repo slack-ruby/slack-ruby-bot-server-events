@@ -40,7 +40,7 @@ module SlackRubyBotServer
 
                 given type: ->(val) { val == 'block_actions' } do
                   optional :trigger_id, type: String
-                  requires :response_url, type: String
+                  optional :response_url, type: String
                   requires :token, type: String
                   requires :user, type: Hash do
                     requires :id, type: String
