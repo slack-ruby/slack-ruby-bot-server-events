@@ -2,7 +2,7 @@
 
 #### 0.3.2 (Next)
 
-* Your contribution here.
+* [#10](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/10): Fix actions endpoint for block dropdowns - [@maths22](https://github.com/maths22).
 
 #### 0.3.1 (2/4/2021)
 
