@@ -1,6 +1,6 @@
 ---
 name: danger
-on: [pull_request]
+on: [push, pull_request]
 jobs:
   danger:
     runs-on: ubuntu-20.04
