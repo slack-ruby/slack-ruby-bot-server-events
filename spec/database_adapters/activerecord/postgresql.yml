@@ -11,6 +11,7 @@ development:
 test:
   <<: *default
   database: slack_ruby_bot_server_slack_test
+  url: <%= ENV["DATABASE_URL"] %>
 
 production:
   <<: *default
