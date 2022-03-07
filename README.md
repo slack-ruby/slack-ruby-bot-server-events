@@ -4,6 +4,7 @@ Slack Ruby Bot Server Events Extension
 [![Gem Version](https://badge.fury.io/rb/slack-ruby-bot-server-events.svg)](https://badge.fury.io/rb/slack-ruby-bot-server-events)
 [![lint](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/rubocop.yml/badge.svg)](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/rubocop.yml)
 [![test with mongodb](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/test-mongodb.yml/badge.svg)](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/test-mongodb.yml)
+[![test with postgresql](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/test-postgresql.yml/badge.svg)](https://github.com/slack-ruby/slack-ruby-bot-server-events/actions/workflows/test-postgresql.yml)
 
 An extension to [slack-ruby-bot-server](https://github.com/slack-ruby/slack-ruby-bot-server) that makes it easy to handle Slack slash commands, interactive buttons and events.
 
