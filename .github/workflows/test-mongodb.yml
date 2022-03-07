@@ -1,5 +1,5 @@
 ---
-name: test
+name: test with mongodb
 on: [push, pull_request]
 jobs:
   test:
