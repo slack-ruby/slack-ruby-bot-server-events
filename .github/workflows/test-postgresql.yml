@@ -1,5 +1,5 @@
 ---
-name: test with postgres
+name: test
 on: [push, pull_request]
 jobs:
   test:
@@ -8,20 +8,24 @@ jobs:
       matrix:
         entry:
           - { ruby: 2.6.2, postgresql: 11 }
+          - { ruby: 2.6.2, postgresql: 14 }
     name: test (ruby=${{ matrix.entry.ruby }}, postgresql=${{ matrix.entry.postgresql }})
+    services:
+      postgres:
+        image: postgres:${{ matrix.entry.postgresql }}
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: slack_ruby_bot_server_test
+        ports:
+          - 5432:5432
+        # needed because the postgres container does not provide a healthcheck
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
     steps:
       - uses: actions/checkout@v2
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.entry.ruby }}
-      - uses: browser-actions/setup-geckodriver@latest
-      - run: geckodriver --version
-      - uses: harmon758/postgresql-action@v1
-        with:
-          postgresql version: ${{ matrix.entry.postgresql }}
-          postgresql db: slack_ruby_bot_server_test
-          postgresql user: test
-          postgresql password: password
       - name: Test
         env:
           DATABASE_ADAPTER: activerecord
