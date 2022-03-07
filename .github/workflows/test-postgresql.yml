@@ -23,11 +23,9 @@ jobs:
           postgresql user: test
           postgresql password: password
       - name: Test
-        uses: GabrielBB/xvfb-action@v1
         env:
           DATABASE_ADAPTER: activerecord
           DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_test
-        with:
-          run: |
-            bundle install
-            bundle exec rake spec
+        run: |
+          bundle install
+          bundle exec rake spec
