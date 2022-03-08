@@ -16,17 +16,13 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.entry.ruby }}
-      - uses: browser-actions/setup-geckodriver@latest
-      - run: geckodriver --version
       - uses: supercharge/mongodb-github-action@1.7.0
         with:
           mongodb-version: ${{ matrix.entry.mongodb }}
       - name: Test
-        uses: GabrielBB/xvfb-action@v1
+        run: |
+          bundle install
+          bundle exec rake spec
         env:
           DATABASE_ADAPTER: mongoid
           MONGOID_VERSION: ${{ matrix.entry.mongoid }}
-        with:
-          run: |
-            bundle install
-            bundle exec rake spec
