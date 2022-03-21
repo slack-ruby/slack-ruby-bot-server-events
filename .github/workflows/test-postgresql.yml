@@ -32,4 +32,4 @@ jobs:
           bundle exec rake spec
         env:
           DATABASE_ADAPTER: activerecord
-          DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_slack_test
+          DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_events_test
