@@ -25,4 +25,5 @@ jobs:
           bundle exec rake spec
         env:
           DATABASE_ADAPTER: mongoid
+          DATABASE_URL: "mongodb://localhost"
           MONGOID_VERSION: ${{ matrix.entry.mongoid }}
