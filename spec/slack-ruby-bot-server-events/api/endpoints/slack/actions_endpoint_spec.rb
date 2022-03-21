@@ -113,6 +113,18 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
         }
       end
 
+      let(:payload_without_response_url) do
+        {
+          type: 'block_actions',
+          user: { id: 'user_id' },
+          team: { id: 'team_id' },
+          token: 'deprecated',
+          actions: [
+            { type: 'button', action_id: 'action_id' }
+          ]
+        }
+      end
+
       context 'with an action handler' do
         before do
           SlackRubyBotServer::Events.configure do |config|
@@ -124,6 +136,13 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
 
         it 'performs action' do
           post '/api/slack/action', payload: payload.to_json
+          expect(last_response.status).to eq 201
+          response = JSON.parse(last_response.body)
+          expect(response).to eq('text' => 'block_actions/action_id')
+        end
+
+        it 'performs action when payload has no response url' do
+          post '/api/slack/action', payload: payload_without_response_url.to_json
           expect(last_response.status).to eq 201
           response = JSON.parse(last_response.body)
           expect(response).to eq('text' => 'block_actions/action_id')
