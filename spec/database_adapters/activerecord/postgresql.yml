@@ -6,13 +6,13 @@ default: &default
 
 development:
   <<: *default
-  database: slack_ruby_bot_server_slack_development
+  database: slack_ruby_bot_server_events_development
 
 test:
   <<: *default
-  database: slack_ruby_bot_server_slack_test
+  database: slack_ruby_bot_server_events_test
   url: <%= ENV["DATABASE_URL"] %>
 
 production:
   <<: *default
-  database: slack_ruby_bot_server_slack_production
+  database: slack_ruby_bot_server_events_production

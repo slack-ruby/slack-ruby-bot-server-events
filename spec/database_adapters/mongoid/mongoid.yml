@@ -11,9 +11,7 @@ development:
 test:
   clients:
     default:
-      database: slack-ruby-bot-server-events_test
-      hosts:
-        - 127.0.0.1:27017
+      uri: <%= ENV["DATABASE_URL"] %>
   options:
     raise_not_found_error: false
     use_utc: true

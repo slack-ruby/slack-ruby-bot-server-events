@@ -8,10 +8,10 @@ when 'mongoid' then
   gem 'mongoid'
   gem 'mongoid-scroll'
 when 'activerecord' then
-  gem 'activerecord', '~> 5.0.0'
-  gem 'otr-activerecord', '~> 1.2.1'
+  gem 'activerecord'
+  gem 'otr-activerecord'
   gem 'virtus'
-  gem 'cursor_pagination' # rubocop:disable Bundler/OrderedGems
+  gem 'cursor_pagination', github: 'dblock/cursor_pagination', branch: 'misc' # rubocop:disable Bundler/OrderedGems
   gem 'pg'
 when nil
   warn "Missing ENV['DATABASE_ADAPTER']."
