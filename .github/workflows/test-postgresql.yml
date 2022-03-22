@@ -8,7 +8,7 @@ jobs:
       matrix:
         entry:
           - { ruby: 2.6.2, postgresql: 11 }
-          - { ruby: 2.6.2, postgresql: 14 }
+          - { ruby: 2.7.2, postgresql: 14 }
     name: test (ruby=${{ matrix.entry.ruby }}, postgresql=${{ matrix.entry.postgresql }})
     services:
       postgres:
