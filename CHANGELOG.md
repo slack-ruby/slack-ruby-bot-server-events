@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 0.3.3 (Next)
+
+* Your contribution here.
+
 #### 0.3.2 (2022/06/09)
 
 * [#13](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/13): Replace Travis CI with Github Actions - [@CrazyOptimist](https://github.com/CrazyOptimist).
