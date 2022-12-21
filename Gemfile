@@ -5,7 +5,7 @@ source 'https://rubygems.org'
 case ENV['DATABASE_ADAPTER']
 when 'mongoid' then
   gem 'kaminari-mongoid'
-  gem 'mongoid'
+  gem 'mongoid', ENV['MONGOID_VERSION'] || '~> 7.3.0'
   gem 'mongoid-scroll'
 when 'activerecord' then
   gem 'activerecord'
