@@ -1,10 +1,9 @@
 ### Changelog
 
-#### 0.4.0 (Next)
+#### 0.4.0 (2025/09/22)
 
 * [#18](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/18): Use pagy_cursor in place of cursor_pagination - [@duffn](https://github.com/duffn).
 * [#26](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/26): Upgraded RuboCop to 1.80.2 - [@dblock](https://github.com/dblock).
-* Your contribution here.
 
 #### 0.3.2 (2022/06/09)
 
