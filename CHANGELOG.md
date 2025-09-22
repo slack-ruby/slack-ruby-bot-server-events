@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 0.4.1 (Next)
+
+* Your contribution here.
+
 #### 0.4.0 (2025/09/22)
 
 * [#18](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/18): Use pagy_cursor in place of cursor_pagination - [@duffn](https://github.com/duffn).
