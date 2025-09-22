@@ -2,12 +2,13 @@
 
 source 'https://rubygems.org'
 
-case ENV['DATABASE_ADAPTER']
-when 'mongoid' then
+case ENV.fetch('DATABASE_ADAPTER', nil)
+when 'mongoid'
   gem 'kaminari-mongoid'
   gem 'mongoid', ENV['MONGOID_VERSION'] || '~> 7.3.0'
   gem 'mongoid-scroll'
-when 'activerecord' then
+  gem 'mutex_m'
+when 'activerecord'
   gem 'activerecord'
   gem 'otr-activerecord'
   gem 'pagy_cursor'
@@ -16,7 +17,7 @@ when 'activerecord' then
 when nil
   warn "Missing ENV['DATABASE_ADAPTER']."
 else
-  warn "Invalid ENV['DATABASE_ADAPTER']: #{ENV['DATABASE_ADAPTER']}."
+  warn "Invalid ENV['DATABASE_ADAPTER']: #{ENV.fetch('DATABASE_ADAPTER', nil)}."
 end
 
 gemspec
@@ -30,7 +31,9 @@ group :development, :test do
   gem 'rack-test'
   gem 'rake'
   gem 'rspec'
-  gem 'rubocop', '0.81.0'
+  gem 'rubocop', '1.80.2'
+  gem 'rubocop-rake'
+  gem 'rubocop-rspec'
   gem 'vcr'
   gem 'webmock'
 end

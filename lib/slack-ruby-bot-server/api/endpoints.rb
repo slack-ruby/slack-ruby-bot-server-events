@@ -8,15 +8,13 @@ module SlackRubyBotServer
           format :json
 
           before do
-            begin
-              ::Slack::Events::Request.new(
-                request,
-                signing_secret: SlackRubyBotServer::Events.config.signing_secret,
-                signature_expires_in: SlackRubyBotServer::Events.config.signature_expires_in
-              ).verify!
-            rescue ::Slack::Events::Request::TimestampExpired
-              error!('Invalid Signature', 403)
-            end
+            ::Slack::Events::Request.new(
+              request,
+              signing_secret: SlackRubyBotServer::Events.config.signing_secret,
+              signature_expires_in: SlackRubyBotServer::Events.config.signature_expires_in
+            ).verify!
+          rescue ::Slack::Events::Request::TimestampExpired
+            error!('Invalid Signature', 403)
           end
 
           mount SlackRubyBotServer::Events::Api::Endpoints::Slack::CommandsEndpoint
