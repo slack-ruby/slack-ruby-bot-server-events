@@ -15,7 +15,7 @@ module SlackRubyBotServer
 
       def reset!
         self.callbacks = Hash.new { |h, k| h[k] = [] }
-        self.signing_secret = ENV['SLACK_SIGNING_SECRET']
+        self.signing_secret = ENV.fetch('SLACK_SIGNING_SECRET', nil)
         self.signature_expires_in = 5 * 60
 
         on :event, 'url_verification' do |event|

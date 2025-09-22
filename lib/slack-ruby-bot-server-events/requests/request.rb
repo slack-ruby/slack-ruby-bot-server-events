@@ -8,7 +8,7 @@ module SlackRubyBotServer
 
         def initialize(params, request)
           @request = request
-          super params
+          super(params)
         end
 
         def logger

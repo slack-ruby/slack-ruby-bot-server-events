@@ -3,6 +3,8 @@
 ENV['RACK_ENV'] = 'test'
 ENV['DATABASE_ADAPTER'] ||= 'mongoid'
 
+require 'logger'
+
 Bundler.require
 
 require 'rack/test'

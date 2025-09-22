@@ -173,6 +173,6 @@ end
 
 ### Copyright & License
 
-Copyright [Daniel Doubrovkine](http://code.dblock.org) and Contributors, 2020
+Copyright [Daniel Doubrovkine](http://code.dblock.org) and Contributors, 2020-2025
 
 [MIT License](LICENSE)
