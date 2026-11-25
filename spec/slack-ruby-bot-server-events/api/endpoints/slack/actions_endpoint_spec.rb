@@ -175,6 +175,14 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
           response = JSON.parse(last_response.body)
           expect(response).to eq('text' => 'block_actions: type match')
         end
+
+        it 'performs specific action in a view' do
+          view = { id: 'view_id', type: 'modal', callback_id: 'view_callback_id' }
+          post '/api/slack/action', payload: payload.merge(actions: [{ action_id: 'unique_id' }], view: view).to_json
+          expect(last_response.status).to eq 201
+          response = JSON.parse(last_response.body)
+          expect(response).to eq('text' => 'block_actions: exact match')
+        end
       end
     end
 
