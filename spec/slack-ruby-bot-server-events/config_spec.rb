@@ -34,4 +34,56 @@ describe SlackRubyBotServer::Events::Config do
       end
     end
   end
+
+  context 'with a callback that raises an error' do
+    let(:logger) { SlackRubyBotServer::Api::Middleware.logger }
+    let(:callback) { proc { |_event| raise ArgumentError, 'invalid' } }
+    let(:location) { callback.source_location.first(2).join(':') }
+
+    before do
+      allow(logger).to receive(:error)
+      SlackRubyBotServer::Events.configure do |config|
+        config.on :event, 'event_callback', 'team_join', &callback
+      end
+    end
+
+    def run_callbacks
+      SlackRubyBotServer::Events.config.run_callbacks(:event, %w[event_callback team_join], {})
+    end
+
+    it 're-raises the error' do
+      expect { run_callbacks }.to raise_error(ArgumentError, 'invalid')
+    end
+
+    def run_callbacks_ignoring_errors
+      run_callbacks
+    rescue ArgumentError
+      nil
+    end
+
+    it 'logs the error class, callback key, location, and message' do
+      run_callbacks_ignoring_errors
+      expect(logger).to have_received(:error).with(
+        "#{ArgumentError.name} in event/event_callback/team_join callback defined at #{location}: invalid"
+      )
+    end
+  end
+
+  context 'with a callback that returns a value' do
+    let(:logger) { SlackRubyBotServer::Api::Middleware.logger }
+
+    before do
+      allow(logger).to receive(:error)
+      SlackRubyBotServer::Events.configure do |config|
+        config.on :event, 'event_callback' do |_event|
+          { ok: true }
+        end
+      end
+    end
+
+    it 'returns the value without logging an error' do
+      SlackRubyBotServer::Events.config.run_callbacks(:event, %w[event_callback team_join], {})
+      expect(logger).not_to have_received(:error)
+    end
+  end
 end
