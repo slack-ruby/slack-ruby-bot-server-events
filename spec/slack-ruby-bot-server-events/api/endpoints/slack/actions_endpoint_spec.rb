@@ -177,5 +177,61 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
         end
       end
     end
+
+    %w[view_submission view_closed].each do |type|
+      context "given payload type is #{type}" do
+        let(:payload) do
+          {
+            type: type,
+            user: { id: 'user_id' },
+            team: { id: 'team_id' },
+            token: 'deprecated',
+            view: { id: 'view_id', type: 'modal', callback_id: 'unique_id', state: { values: { block: { input: { value: 'x' } } } } }
+          }
+        end
+
+        context 'with a view type actions handler' do
+          before do
+            SlackRubyBotServer::Events.configure do |config|
+              config.on :action, type, 'unique_id' do |action|
+                { text: "#{type}: exact match #{action[:payload][:view][:id]} #{action[:payload][:view][:state][:values][:block][:input][:value]}" }
+              end
+
+              config.on :action, type do |_action|
+                { text: "#{type}: type match" }
+              end
+            end
+          end
+
+          it 'performs specific action' do
+            post '/api/slack/action', payload: payload.to_json
+            expect(last_response.status).to eq 201
+            response = JSON.parse(last_response.body)
+            expect(response).to eq('text' => "#{type}: exact match view_id x")
+          end
+
+          it 'performs default action' do
+            post '/api/slack/action', payload: payload.merge(view: { id: 'view_id', callback_id: 'updated' }).to_json
+            expect(last_response.status).to eq 201
+            response = JSON.parse(last_response.body)
+            expect(response).to eq('text' => "#{type}: type match")
+          end
+
+          it 'performs default action when the view has no callback_id' do
+            post '/api/slack/action', payload: payload.merge(view: { id: 'view_id', callback_id: '' }).to_json
+            expect(last_response.status).to eq 201
+            response = JSON.parse(last_response.body)
+            expect(response).to eq('text' => "#{type}: type match")
+          end
+
+          it 'requires a view' do
+            post '/api/slack/action', payload: payload.except(:view).to_json
+            expect(last_response.status).to eq 400
+            response = JSON.parse(last_response.body)
+            expect(response['type']).to eq 'param_error'
+          end
+        end
+      end
+    end
   end
 end
