@@ -7,6 +7,7 @@
 * [#29](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/29): Lint Markdown, YAML, and spelling with rubocop-md, rubocop-prose, rubocop-spellcheck, and rubocop-yaml in a separate Lint workflow, and clean up documentation - [@dblock](https://github.com/dblock).
 * [#30](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/30): Run CI pushes only on the default branch, cancel superseded pull request runs, cache gems, and bound job times - [@dblock](https://github.com/dblock).
 * [#31](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/31): Use the danger/danger-pr-comment v0.3.0 reusable workflows - [@dblock](https://github.com/dblock).
+* [#35](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/35): Release with ruby-gem-release through a manually dispatched GitHub Actions workflow and RubyGems Trusted Publishing - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 #### 0.4.0 (2025/09/22)

@@ -1,6 +1,7 @@
 activerecord
 ActiveSupport
 api
+Bundler
 CHANGELOG
 Changelog
 CrazyOptimist
@@ -11,8 +12,10 @@ duffn
 ENV
 EvFGTNRKLG
 Gemfile
+gemspec
 Github
 hal
+JRuby
 json
 md
 mongoid
@@ -21,13 +24,17 @@ nitpicky
 OAuth
 ostruct
 postgresql
+Rakefile
 rb
 README
 Rebase
 rebase
+RSpec
 RuboCop
 rubocop
+RubyGems
 SlackRubyBotServer
+SlackRubyBotServerEventsRelease
 subclasses
 url
 webhook

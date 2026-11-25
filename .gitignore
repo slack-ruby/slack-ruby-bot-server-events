@@ -8,3 +8,4 @@ log
 Gemfile.lock
 .ruby-version
 pkg
+/vendor/bundle
