@@ -186,6 +186,49 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::ActionsEndpoint do
       end
     end
 
+    context 'given payload type is block_suggestion' do
+      let(:payload) do
+        {
+          type: 'block_suggestion',
+          user: { id: 'user_id' },
+          team: { id: 'team_id' },
+          token: 'deprecated',
+          action_id: 'unique_id',
+          block_id: 'block_id',
+          value: 'query'
+        }
+      end
+
+      before do
+        SlackRubyBotServer::Events.configure do |config|
+          config.on :action, 'block_suggestion', 'unique_id' do |action|
+            { options: [{ text: { type: 'plain_text', text: action[:payload][:value] }, value: 'exact' }] }
+          end
+
+          config.on :action, 'block_suggestion' do |_action|
+            { options: [] }
+          end
+        end
+      end
+
+      it 'performs specific action' do
+        post '/api/slack/action', payload: payload.to_json
+        expect(JSON.parse(last_response.body)).to eq(
+          'options' => [{ 'text' => { 'type' => 'plain_text', 'text' => 'query' }, 'value' => 'exact' }]
+        )
+      end
+
+      it 'performs default action' do
+        post '/api/slack/action', payload: payload.merge(action_id: 'updated').to_json
+        expect(JSON.parse(last_response.body)).to eq('options' => [])
+      end
+
+      it 'requires an action_id' do
+        post '/api/slack/action', payload: payload.except(:action_id).to_json
+        expect(last_response.status).to eq 400
+      end
+    end
+
     %w[view_submission view_closed].each do |type|
       context "given payload type is #{type}" do
         let(:payload) do

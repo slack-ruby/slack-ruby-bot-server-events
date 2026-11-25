@@ -6,6 +6,7 @@ CHANGELOG
 Changelog
 CrazyOptimist
 dblock
+dedman
 Doubrovkine
 dropdowns
 duffn
