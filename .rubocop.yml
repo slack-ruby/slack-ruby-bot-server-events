@@ -1,11 +1,31 @@
+plugins:
+- rubocop-md
+- rubocop-prose
+- rubocop-rake
+- rubocop-rspec
+- rubocop-spellcheck
+- rubocop-yaml
+
+inherit_from: ".rubocop_todo.yml"
+
 AllCops:
   NewCops: enable
+  SuggestExtensions: false
+  inherit_mode:
+    merge:
+    - Include
+  Include:
+  - ".github/**/*.yml"
+  - ".rubocop.yml"
+  Exclude:
+  - coverage/**/*
+  - pkg/**/*
+  - vendor/**/*
 
 Metrics:
   Enabled: false
 
 Layout/LineLength:
-  Max: 500
   Enabled: false
 
 Style/Documentation:
@@ -14,9 +34,60 @@ Style/Documentation:
 Style/ModuleFunction:
   EnforcedStyle: extend_self
 
-plugins:
-  - rubocop-rake
-  - rubocop-rspec
+YAML/Lint/InvalidSyntax:
+  Include:
+  - "**/*.yml"
+  - "**/*.yaml"
 
-inherit_from: .rubocop_todo.yml
+YAML/Lint/DuplicateKey:
+  Include:
+  - "**/*.yml"
+  - "**/*.yaml"
 
+Naming/FileName:
+  inherit_mode:
+    merge:
+    - Exclude
+  Exclude:
+  - "**/*.md"
+  - ".github/workflows/*.yml"
+
+Markdown/HeadingCapitalization:
+  inherit_mode:
+    merge:
+    - Exclude
+  Enabled: true
+  Style: title_case
+  Exclude:
+  - CHANGELOG.md
+
+Prose/MaxLength:
+  inherit_mode:
+    merge:
+    - Exclude
+  Max: false
+  Exclude:
+  - CHANGELOG.md
+
+Spellcheck:
+  DictionaryFiles:
+    en:
+    - gem:rubocop-spellcheck/data/en/en.dic
+    - ".spellcheck.txt"
+
+Spellcheck/Spelling:
+  Exclude: []
+
+Markdown/CompactLists:
+  inherit_mode:
+    merge:
+    - Exclude
+  Exclude:
+  - CHANGELOG.md
+
+Markdown/FenceLanguage:
+  inherit_mode:
+    merge:
+    - Exclude
+  Exclude:
+  - CHANGELOG.md
