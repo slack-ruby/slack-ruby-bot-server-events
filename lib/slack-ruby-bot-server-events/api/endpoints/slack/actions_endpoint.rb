@@ -67,12 +67,31 @@ module SlackRubyBotServer
                     end
                   end
                 end
+
+                given type: ->(val) { %w[view_submission view_closed].include? val } do
+                  optional :token, type: String
+                  optional :trigger_id, type: String
+                  requires :user, type: Hash do
+                    requires :id, type: String
+                    optional :name, type: String
+                  end
+                  requires :team, type: Hash do
+                    requires :id, type: String
+                    optional :domain, type: String
+                  end
+                  requires :view, type: Hash do
+                    requires :id, type: String
+                    optional :type, type: String
+                    optional :callback_id, type: String
+                    optional :private_metadata, type: String
+                  end
+                end
               end
             end
             post '/action' do
               action = SlackRubyBotServer::Events::Requests::Action.new(params, request)
               payload_type = params[:payload][:type]
-              callback_id = params[:payload][:callback_id]
+              callback_id = params[:payload][:callback_id].presence || params[:payload].dig(:view, :callback_id).presence
               action_ids = params[:payload].fetch(:actions, []).map { |entity| entity[:action_id] }
               SlackRubyBotServer::Events.config.run_callbacks(
                 :action,

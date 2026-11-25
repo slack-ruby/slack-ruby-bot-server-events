@@ -147,6 +147,18 @@ SlackRubyBotServer::Events.configure do |config|
 end
 ```
 
+The following example handles the submission of a [modal](https://api.slack.com/surfaces/modals) opened with `callback_id: 'your_callback_id'`. For `view_submission` and `view_closed` payloads the callback ID is read from `payload.view.callback_id`.
+
+```ruby
+SlackRubyBotServer::Events.configure do |config|
+  config.on :action, 'view_submission', 'your_callback_id' do |action|
+    values = action[:payload][:view][:state][:values]
+    action.logger.info "Submitted #{values}."
+    { response_action: 'clear' }
+  end
+end
+```
+
 ### Commands
 
 Respond to [Slash Commands](https://api.slack.com/interactivity/slash-commands) by implementing `SlackRubyBotServer::Events::Config#on :command`.
