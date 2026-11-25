@@ -7,7 +7,7 @@ when 'mongoid'
   # ActiveSupport before 8.1, which older Mongoid versions resolve to, is incompatible with json 3.
   gem 'json', '< 3'
   gem 'kaminari-mongoid'
-  gem 'mongoid', ENV['MONGOID_VERSION'] || '~> 7.3.0'
+  gem 'mongoid', ENV['MONGOID_VERSION'] || '~> 7.6.0'
   gem 'mongoid-scroll'
   gem 'mutex_m'
 when 'activerecord'

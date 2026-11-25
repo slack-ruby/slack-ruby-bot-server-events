@@ -26,10 +26,10 @@ jobs:
       matrix:
         entry:
           - { ruby: '3.1', mongoid: '6.4.8', mongodb: '4.4' }
-          - { ruby: '3.1', mongoid: '7.3.0', mongodb: '5.0' }
-          - { ruby: '3.2', mongoid: '8.1.11', mongodb: '6.0' }
-          - { ruby: '3.4', mongoid: '9.0.8', mongodb: '7.0' }
-          - { ruby: '4.0', mongoid: '9.1.2', mongodb: '8.0' }
+          - { ruby: '3.1', mongoid: '7.3.5', mongodb: '5.0' }
+          - { ruby: '3.2', mongoid: '8.1.13', mongodb: '6.0' }
+          - { ruby: '3.4', mongoid: '9.0.13', mongodb: '7.0' }
+          - { ruby: '4.0', mongoid: '9.1.2', mongodb: '8.3' }
     steps:
       - name: Check Out Code
         uses: actions/checkout@v7
