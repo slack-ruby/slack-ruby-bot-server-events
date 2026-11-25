@@ -1,0 +1,76 @@
+name: Test
+
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  mongodb:
+    name: Test (Ruby ${{ matrix.entry.ruby }}, Mongoid ${{ matrix.entry.mongoid }}, MongoDB ${{ matrix.entry.mongodb }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        entry:
+          - { ruby: '3.1', mongoid: '6.4.8', mongodb: '4.4' }
+          - { ruby: '3.1', mongoid: '7.3.0', mongodb: '5.0' }
+          - { ruby: '3.2', mongoid: '8.1.11', mongodb: '6.0' }
+          - { ruby: '3.4', mongoid: '9.0.8', mongodb: '7.0' }
+          - { ruby: '4.0', mongoid: '9.1.2', mongodb: '8.0' }
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v7
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.entry.ruby }}
+      - name: Start MongoDB
+        uses: supercharge/mongodb-github-action@1.12.1
+        with:
+          mongodb-version: ${{ matrix.entry.mongodb }}
+      - name: Run Tests
+        run: |
+          bundle install
+          bundle exec rake spec
+        env:
+          DATABASE_ADAPTER: mongoid
+          DATABASE_URL: mongodb://localhost
+          MONGOID_VERSION: ${{ matrix.entry.mongoid }}
+  postgresql:
+    name: Test (Ruby ${{ matrix.entry.ruby }}, PostgreSQL ${{ matrix.entry.postgresql }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        entry:
+          - { ruby: '3.1', postgresql: '11' }
+          - { ruby: '3.2', postgresql: '14' }
+          - { ruby: '3.3', postgresql: '16' }
+          - { ruby: '3.4', postgresql: '17' }
+          - { ruby: '4.0', postgresql: '18' }
+    services:
+      postgres:
+        image: postgres:${{ matrix.entry.postgresql }}
+        env:
+          POSTGRES_USER: test
+          POSTGRES_PASSWORD: password
+          POSTGRES_DB: slack_ruby_bot_server_events_test
+        ports:
+          - 5432:5432
+        # the postgres container does not provide a health check
+        options: --health-cmd pg_isready --health-interval 10s --health-timeout 5s --health-retries 5
+    steps:
+      - name: Check Out Code
+        uses: actions/checkout@v7
+      - name: Set Up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: ${{ matrix.entry.ruby }}
+      - name: Run Tests
+        run: |
+          bundle install
+          bundle exec rake spec
+        env:
+          DATABASE_ADAPTER: activerecord
+          DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_events_test
