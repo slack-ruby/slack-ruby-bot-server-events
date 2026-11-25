@@ -31,6 +31,7 @@ group :development, :test do
   gem 'fabrication'
   gem 'faker'
   gem 'hyperclient'
+  gem 'ostruct'
   gem 'rack-test'
   gem 'rake'
   gem 'rspec'
