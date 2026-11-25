@@ -103,6 +103,17 @@ SlackRubyBotServer::Events.configure do |config|
 end
 ```
 
+Pass an array of values to handle several events with one callback.
+
+```ruby
+SlackRubyBotServer::Events.configure do |config|
+  config.on :event, 'event_callback', %w[pin_added pin_removed] do |event|
+    # handle event[:event][:type] of pin_added or pin_removed
+    true
+  end
+end
+```
+
 ### Actions
 
 Respond to [Shortcuts](https://api.slack.com/interactivity/shortcuts) and [Interactive Messages](https://api.slack.com/messaging/interactivity) as well as [Attached Interactive Message Buttons (Outmoded)](https://api.slack.com/legacy/message-buttons) by implementing `SlackRubyBotServer::Events::Config#on :action`.

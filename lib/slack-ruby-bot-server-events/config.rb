@@ -23,10 +23,16 @@ module SlackRubyBotServer
         end
       end
 
+      # Register a callback for a type and an optional path of values, e.g. on(:event, 'event_callback', 'team_join').
+      # The path may also be given as a single array. An array within the path lists alternatives, and the callback
+      # is registered for each combination, e.g. on(:event, 'event_callback', %w[pin_added pin_removed]).
       def on(type, *values, &block)
-        value_key = values.compact.join('/') if values.any?
-        key = [type.to_s, value_key].compact.join('/')
-        callbacks[key] << block
+        values = values.first if values.size == 1 && values.first.is_a?(Array)
+        alternatives = values.compact.map { |value| Array(value).map(&:to_s) }
+        paths = alternatives.empty? ? [[]] : alternatives.first.product(*alternatives.drop(1))
+        paths.each do |path|
+          callbacks[[type.to_s, *path].join('/')] << block
+        end
       end
 
       def run_callbacks(type, value, args)
