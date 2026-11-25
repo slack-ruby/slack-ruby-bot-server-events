@@ -16,6 +16,7 @@ An extension to [slack-ruby-bot-server](https://github.com/slack-ruby/slack-ruby
   - [Events](#events-1)
   - [Actions](#actions)
   - [Commands](#commands)
+- [Testing](#testing)
 - [Copyright & License](#copyright--license)
 
 ## Sample
@@ -188,6 +189,46 @@ SlackRubyBotServer::Events.configure do |config|
   end
 end
 ```
+
+## Testing
+
+Test callbacks by posting a request to the API with [Rack::Test](https://github.com/rack/rack-test) and stubbing Slack's signature verification. Pass the parameters as the second argument to `post`, not as `params:`, and include every parameter that Slack sends and the endpoint requires, otherwise the API responds with a `400` error before any callback runs. Check the response status to catch such errors.
+
+The following spec tests the `/ping` command above.
+
+```ruby
+describe '/ping' do
+  include Rack::Test::Methods
+
+  def app
+    SlackRubyBotServer::Api::Middleware.instance
+  end
+
+  before do
+    allow_any_instance_of(Slack::Events::Request).to receive(:verify!)
+  end
+
+  let(:command) do
+    {
+      command: '/ping',
+      text: '',
+      token: 'deprecated',
+      user_id: 'U12345',
+      channel_id: 'C12345',
+      channel_name: 'general',
+      team_id: 'T12345'
+    }
+  end
+
+  it 'responds with pong' do
+    post '/api/slack/command', command
+    expect(last_response.status).to eq 201
+    expect(JSON.parse(last_response.body)).to eq('text' => 'pong')
+  end
+end
+```
+
+Events are posted to `/api/slack/event` and actions to `/api/slack/action` with a JSON `payload` parameter, for example `post '/api/slack/action', payload: { type: 'block_actions', ... }.to_json`. See [spec/slack-ruby-bot-server-events/api/endpoints/slack](spec/slack-ruby-bot-server-events/api/endpoints/slack) for more examples.
 
 ## Copyright & License
 
