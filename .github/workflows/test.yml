@@ -1,6 +1,13 @@
 name: Test
 
-on: [push, pull_request]
+on:
+  push:
+    branches: [master]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 permissions:
   contents: read
@@ -9,6 +16,11 @@ jobs:
   mongodb:
     name: Test (Ruby ${{ matrix.entry.ruby }}, Mongoid ${{ matrix.entry.mongoid }}, MongoDB ${{ matrix.entry.mongodb }})
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_ADAPTER: mongoid
+      DATABASE_URL: mongodb://localhost
+      MONGOID_VERSION: ${{ matrix.entry.mongoid }}
     strategy:
       fail-fast: false
       matrix:
@@ -25,21 +37,20 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.entry.ruby }}
+          bundler-cache: true
       - name: Start MongoDB
         uses: supercharge/mongodb-github-action@1.12.1
         with:
           mongodb-version: ${{ matrix.entry.mongodb }}
       - name: Run Tests
-        run: |
-          bundle install
-          bundle exec rake spec
-        env:
-          DATABASE_ADAPTER: mongoid
-          DATABASE_URL: mongodb://localhost
-          MONGOID_VERSION: ${{ matrix.entry.mongoid }}
+        run: bundle exec rake spec
   postgresql:
     name: Test (Ruby ${{ matrix.entry.ruby }}, PostgreSQL ${{ matrix.entry.postgresql }})
     runs-on: ubuntu-latest
+    timeout-minutes: 10
+    env:
+      DATABASE_ADAPTER: activerecord
+      DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_events_test
     strategy:
       fail-fast: false
       matrix:
@@ -67,10 +78,6 @@ jobs:
         uses: ruby/setup-ruby@v1
         with:
           ruby-version: ${{ matrix.entry.ruby }}
+          bundler-cache: true
       - name: Run Tests
-        run: |
-          bundle install
-          bundle exec rake spec
-        env:
-          DATABASE_ADAPTER: activerecord
-          DATABASE_URL: postgres://test:password@localhost/slack_ruby_bot_server_events_test
+        run: bundle exec rake spec
