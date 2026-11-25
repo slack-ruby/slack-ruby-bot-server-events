@@ -68,6 +68,21 @@ module SlackRubyBotServer
                   end
                 end
 
+                given type: ->(val) { val == 'block_suggestion' } do
+                  optional :token, type: String
+                  requires :action_id, type: String
+                  optional :block_id, type: String
+                  optional :value, type: String
+                  requires :user, type: Hash do
+                    requires :id, type: String
+                    optional :name, type: String
+                  end
+                  requires :team, type: Hash do
+                    requires :id, type: String
+                    optional :domain, type: String
+                  end
+                end
+
                 given type: ->(val) { %w[view_submission view_closed].include? val } do
                   optional :token, type: String
                   optional :trigger_id, type: String
@@ -96,7 +111,11 @@ module SlackRubyBotServer
                             else
                               params[:payload][:callback_id]
                             end
-              action_ids = params[:payload].fetch(:actions, []).map { |entity| entity[:action_id] }
+              action_ids = if payload_type == 'block_suggestion'
+                             [params[:payload][:action_id]]
+                           else
+                             params[:payload].fetch(:actions, []).map { |entity| entity[:action_id] }
+                           end
               SlackRubyBotServer::Events.config.run_callbacks(
                 :action,
                 ([payload_type, callback_id] + action_ids).compact,

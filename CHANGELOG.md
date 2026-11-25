@@ -12,6 +12,7 @@
 * [#37](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/37): Fix [#7](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues/7), log the key and definition location of a callback that raises an error - [@dblock](https://github.com/dblock).
 * [#38](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/38): Fix [#16](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues/16), handle several events, actions, or commands with one callback, e.g. `config.on :event, 'event_callback', %w[pin_added pin_removed]` - [@dblock](https://github.com/dblock).
 * [#39](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/39): Document testing callbacks with RSpec - [@dblock](https://github.com/dblock).
+* [#42](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/42): Match `block_suggestion` callbacks by `action_id`, for external select menus - [@dedman](https://github.com/dedman), [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 #### 0.4.0 (2025/09/22)

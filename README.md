@@ -159,6 +159,21 @@ SlackRubyBotServer::Events.configure do |config|
 end
 ```
 
+The following example loads the options of an [external select menu](https://api.slack.com/reference/block-kit/block-elements#external_select) with `action_id: 'your_action_id'`. For `block_suggestion` payloads the action ID is read from `payload.action_id`.
+
+```ruby
+SlackRubyBotServer::Events.configure do |config|
+  config.on :action, 'block_suggestion', 'your_action_id' do |action|
+    query = action[:payload][:value]
+    {
+      options: %w[one two three].grep(/#{Regexp.escape(query)}/).map do |value|
+        { text: { type: 'plain_text', text: value }, value: value }
+      end
+    }
+  end
+end
+```
+
 The following example handles the submission of a [modal](https://api.slack.com/surfaces/modals) opened with `callback_id: 'your_callback_id'`. For `view_submission` and `view_closed` payloads the callback ID is read from `payload.view.callback_id`.
 
 ```ruby
