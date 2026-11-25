@@ -60,6 +60,7 @@ jobs:
           - { ruby: '3.3', postgresql: '16' }
           - { ruby: '3.4', postgresql: '17' }
           - { ruby: '4.0', postgresql: '18' }
+          - { ruby: '4.0', postgresql: '19' }
     services:
       postgres:
         image: postgres:${{ matrix.entry.postgresql }}
