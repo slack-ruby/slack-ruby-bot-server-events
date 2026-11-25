@@ -1,6 +1,6 @@
 ### Changelog
 
-#### 0.4.1 (Next)
+#### 0.5.0 (2026/11/25)
 
 * [#27](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/27): Migrate Danger to danger-pr-comment workflow - [@dblock](https://github.com/dblock).
 * [#28](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/28): Consolidate test workflows into test.yml, add Ruby 4.0, MongoDB 8.0, and PostgreSQL 18, update actions, and add the ostruct development dependency needed on Ruby 4.0 - [@dblock](https://github.com/dblock).
@@ -13,7 +13,6 @@
 * [#38](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/38): Fix [#16](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues/16), handle several events, actions, or commands with one callback, e.g. `config.on :event, 'event_callback', %w[pin_added pin_removed]` - [@dblock](https://github.com/dblock).
 * [#39](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/39): Document testing callbacks with RSpec - [@dblock](https://github.com/dblock).
 * [#42](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/42): Match `block_suggestion` callbacks by `action_id`, for external select menus - [@dedman](https://github.com/dedman), [@dblock](https://github.com/dblock).
-* Your contribution here.
 
 #### 0.4.0 (2025/09/22)
 
