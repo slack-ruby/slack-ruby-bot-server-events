@@ -9,6 +9,7 @@
 * [#31](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/31): Use the danger/danger-pr-comment v0.3.0 reusable workflows - [@dblock](https://github.com/dblock).
 * [#35](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/35): Release with ruby-gem-release through a manually dispatched GitHub Actions workflow and RubyGems Trusted Publishing - [@dblock](https://github.com/dblock).
 * [#36](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/36): Fix [#21](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues/21), match `view_submission` and `view_closed` callbacks by `view.callback_id` - [@dblock](https://github.com/dblock).
+* [#37](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/37): Fix [#7](https://github.com/slack-ruby/slack-ruby-bot-server-events/issues/7), log the key and definition location of a callback that raises an error - [@dblock](https://github.com/dblock).
 * Your contribution here.
 
 #### 0.4.0 (2025/09/22)

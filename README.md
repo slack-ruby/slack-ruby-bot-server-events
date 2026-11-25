@@ -66,7 +66,7 @@ Get the signing secret from [your app's](https://api.slack.com/apps) _Basic Info
 
 ### Implement Callbacks
 
-This library supports events, actions and commands. When implementing multiple callbacks for each type, the response from the first callback to return a non `nil` value will be used and no further callbacks will be invoked. Callbacks receive subclasses of [SlackRubyBotServer::Events::Requests::Request](lib/slack-ruby-bot-server-events/requests/request.rb).
+This library supports events, actions and commands. When implementing multiple callbacks for each type, the response from the first callback to return a non `nil` value will be used and no further callbacks will be invoked. Callbacks receive subclasses of [SlackRubyBotServer::Events::Requests::Request](lib/slack-ruby-bot-server-events/requests/request.rb). When a callback raises an error, the error is logged with the callback's key, such as `event/event_callback/team_join`, and the file and line where the callback was defined, then raised again.
 
 ### Events
 

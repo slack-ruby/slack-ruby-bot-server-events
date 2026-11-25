@@ -36,18 +36,29 @@ module SlackRubyBotServer
 
         # more specific callbacks first
         while keys.any?
-          callbacks += self.callbacks[keys.join('/')]
+          key = keys.join('/')
+          callbacks += self.callbacks[key].map { |c| [key, c] }
           keys.pop
         end
 
-        return nil unless callbacks&.any?
-
-        callbacks.each do |c|
-          rc = c.call(args || value)
+        callbacks.each do |key, c|
+          rc = run_callback(key, c, args || value)
           return rc if rc
         end
 
         nil
+      end
+
+      private
+
+      def run_callback(key, callback, args)
+        callback.call(args)
+      rescue StandardError => e
+        location = callback.source_location&.first(2)&.join(':')
+        SlackRubyBotServer::Api::Middleware.logger.error(
+          "#{e.class.name} in #{key} callback defined at #{location || 'an unknown location'}: #{e.message}"
+        )
+        raise
       end
     end
 
