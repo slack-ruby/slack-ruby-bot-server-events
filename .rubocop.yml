@@ -91,3 +91,18 @@ Markdown/FenceLanguage:
     - Exclude
   Exclude:
   - CHANGELOG.md
+
+# Release examples run a release in a fixture and verify the tag, the next development commit, and their files together.
+RSpec/ExampleLength:
+  inherit_mode:
+    merge:
+    - Exclude
+  Exclude:
+  - spec/release/release_spec.rb
+
+RSpec/MultipleExpectations:
+  inherit_mode:
+    merge:
+    - Exclude
+  Exclude:
+  - spec/release/release_spec.rb
