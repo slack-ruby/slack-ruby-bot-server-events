@@ -136,5 +136,31 @@ describe SlackRubyBotServer::Events::Api::Endpoints::Slack::EventsEndpoint do
         expect(last_response.status).to eq 201
       end
     end
+
+    context 'with an event handler for several events' do
+      before do
+        SlackRubyBotServer::Events.configure do |config|
+          config.on :event, 'event_callback', %w[pin_added pin_removed] do |event|
+            { text: "pin: #{event[:event][:type]}" }
+          end
+
+          config.on :event, 'event_callback' do |event|
+            { text: "other: #{event[:event][:type]}" }
+          end
+        end
+      end
+
+      %w[pin_added pin_removed].each do |type|
+        it "handles #{type}" do
+          post '/api/slack/event', event.merge(event: { type: type })
+          expect(JSON.parse(last_response.body)).to eq('text' => "pin: #{type}")
+        end
+      end
+
+      it 'handles another event' do
+        post '/api/slack/event', event.merge(event: { type: 'reaction_added' })
+        expect(JSON.parse(last_response.body)).to eq('text' => 'other: reaction_added')
+      end
+    end
   end
 end

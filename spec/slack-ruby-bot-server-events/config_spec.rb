@@ -86,4 +86,47 @@ describe SlackRubyBotServer::Events::Config do
       expect(logger).not_to have_received(:error)
     end
   end
+
+  describe '#on' do
+    let(:callback) { proc {} }
+
+    def register(*values)
+      SlackRubyBotServer::Events.config.on(:event, *values, &callback)
+      SlackRubyBotServer::Events.config.callbacks.select { |_key, callbacks| callbacks.include?(callback) }.keys
+    end
+
+    it 'registers a type' do
+      expect(register).to eq %w[event]
+    end
+
+    it 'registers a path' do
+      expect(register('event_callback', 'team_join')).to eq %w[event/event_callback/team_join]
+    end
+
+    it 'ignores nil values' do
+      expect(register('event_callback', nil)).to eq %w[event/event_callback]
+    end
+
+    it 'registers a path given as an array' do
+      expect(register(%w[event_callback team_join])).to eq %w[event/event_callback/team_join]
+    end
+
+    it 'registers each alternative' do
+      expect(register('event_callback', %w[pin_added pin_removed])).to eq %w[
+        event/event_callback/pin_added
+        event/event_callback/pin_removed
+      ]
+    end
+
+    it 'registers each alternative in a path given as an array' do
+      expect(register(['event_callback', %w[pin_added pin_removed]])).to eq %w[
+        event/event_callback/pin_added
+        event/event_callback/pin_removed
+      ]
+    end
+
+    it 'registers each combination of alternatives' do
+      expect(register(%w[a b], %w[c d])).to eq %w[event/a/c event/a/d event/b/c event/b/d]
+    end
+  end
 end
