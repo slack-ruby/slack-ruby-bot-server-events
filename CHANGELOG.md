@@ -1,5 +1,9 @@
 ### Changelog
 
+#### 0.5.1 (Next)
+
+* Your contribution here.
+
 #### 0.5.0 (2026/11/25)
 
 * [#27](https://github.com/slack-ruby/slack-ruby-bot-server-events/pull/27): Migrate Danger to danger-pr-comment workflow - [@dblock](https://github.com/dblock).
